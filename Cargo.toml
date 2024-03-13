@@ -1,0 +1,39 @@
+[package]
+name = "rustscraper"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+reqwest = {version = "*", features = ["blocking"]}
+scraper = "*"
+tokio = {version = "*", features = ["full"]}
+thirtyfour = "*"
+selenium-rs = "0.1.2"
+google-sheets4 = "*"
+hyper = "*"
+hyper-rustls = "*"
+serde = "*"
+serde_json = "*"
+yup-oauth2 = "*"
+config = "*"
+rsautogui = "0.2.2"
+
+[[bin]]
+name = "parse_driver"
+path = "src/parse_driver.rs"
+
+[[bin]]
+name = "sheets"
+path = "src/sheets.rs"
+
+[[bin]]
+name = "catenary"
+path = "src/catenary.rs"
+
+[[bin]]
+name = "searcher"
+path = "src/searcher.rs"
+
+[[bin]]
+name = "sobbing"
+path = "src/sobbing.rs"
