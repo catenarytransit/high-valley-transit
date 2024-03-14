@@ -11,6 +11,7 @@ static TARGET: &str = "https://www.highvalleytransit.org/bus-101-to-deer-valley"
 struct HVTStopTime {
     stop: String, 
     times: Vec<String>,
+    //times: String,
 }
 
 #[tokio::main]
@@ -27,17 +28,19 @@ async fn main() ->  Result<(), Box<dyn Error + Send + Sync>> {
     let mut timetable: Vec<HVTStopTime>= Vec::new(); 
     //put titles into same map format for vec<hvtstoptime> for each title
     let titles = driver.find_all(By::XPath("/html/body/div[8]/main/article/section[5]/div[2]/div/div/div/div[2]/div/div/table/thead/tr/th")).await?;
-    let mut n: u16 = 0;
-    for title in titles {  ///
+    let mut n: u16 = 1;
+    for title in titles {  
         let stop: String = title.text().await?;
         let path = format!("/html/body/div[8]/main/article/section[5]/div[2]/div/div/div/div[2]/div/div/table/tbody/tr/td[{}]", n);
         let times = driver.find_all(By::XPath(&path)).await?;
+        //let times = times[0].text().await?;
         let times = try_join_all(times.iter().map(|c| c.text())).await?;
-        timetable.push(HVTStopTime{stop, times})
+        timetable.push(HVTStopTime{stop, times});
+        n = n+1;
     }
 
     driver.quit().await?;
-
+    //println!("testing {:?} and {:?}", timetable[1].stop, timetable[1].times[0]);
     println!("return vals: {:?}", timetable);
 
     Ok(())
