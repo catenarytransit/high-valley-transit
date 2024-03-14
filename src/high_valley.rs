@@ -1,16 +1,15 @@
 use std::error::Error;
-use scraper::{Html, Selector};
-use thirtyfour::common::command::BySelector;
 use thirtyfour::prelude::*;
-use std::{thread, time, u16};
+use std::{thread, u16};
 use std::time::Duration;
+use futures::future::*;
 
 static TARGET: &str = "https://www.highvalleytransit.org/bus-101-to-deer-valley";
 
 #[derive(Debug)]
 struct HVTStopTime {
     stop: String, 
-    times: String,
+    times: Vec<String>,
 }
 
 #[tokio::main]
@@ -29,13 +28,9 @@ async fn main() ->  Result<(), Box<dyn Error + Send + Sync>> {
         let stop: String = title.text().await?;
         let path = format!("/html/body/div[8]/main/article/section[5]/div[2]/div/div/div/div[2]/div/div/table/tbody/tr/td[{}]", n);
         let times = driver.find_all(By::XPath(&path)).await?;
-        for time in times{
-            let arrival: String = time.text().await?;
-            timetable.push(HVTStopTime{stop: stop.clone(), times: arrival});
-        }
-        n = n+1;
+        let times = try_join_all(times.iter().map(|c| c.text())).await?;
+        timetable.push(HVTStopTime{stop, times})
     }
-    
 
     driver.quit().await?;
 

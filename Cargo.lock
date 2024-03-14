@@ -2567,6 +2567,7 @@ name = "rustscraper"
 version = "0.1.0"
 dependencies = [
  "config",
+ "futures 0.3.30",
  "google-sheets4",
  "hyper 0.14.28",
  "hyper-rustls 0.24.2",

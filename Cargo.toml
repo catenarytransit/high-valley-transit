@@ -17,23 +17,12 @@ serde_json = "*"
 yup-oauth2 = "*"
 config = "*"
 rsautogui = "0.2.2"
+futures = "0.3.30"
 
 [[bin]]
-name = "parse_driver"
-path = "src/parse_driver.rs"
+name = "high_valley"
+path = "src/high_valley.rs"
 
 [[bin]]
-name = "sheets"
-path = "src/sheets.rs"
-
-[[bin]]
-name = "catenary"
-path = "src/catenary.rs"
-
-[[bin]]
-name = "searcher"
-path = "src/searcher.rs"
-
-[[bin]]
-name = "sobbing"
-path = "src/sobbing.rs"
+name = "metrolink"
+path = "src/metrolink.rs"
